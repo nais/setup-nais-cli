@@ -1,0 +1,26 @@
+name: "Nais Setup CLI"
+description: "Setup CLI for the Nais platform"
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v5
+      with:
+        repository: "nais/cli"
+        ref: "ova"
+        path: "./tmp/cli"
+    - uses: actions/setup-go@v5
+      with:
+        go-version-file: ./tmp/cli/go.mod
+        cache: true
+        cache-dependency-path: ./tmp/cli/go.sum
+    - uses: jdx/mise-action@v2
+      with:
+        cache: false
+        install: false
+        working_directory: ./tmp/cli # [default: .] directory to run mise in
+    - name: "Build CLI"
+      shell: bash
+      working-directory: ./tmp/cli
+      run: |
+        mise run build
+        echo "$(pwd)/bin" >> $GITHUB_PATH
