@@ -4,5 +4,7 @@
   "initialVersions": {
     "setup-nais-cli": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "jolly-roses-design"
+  ]
 }
