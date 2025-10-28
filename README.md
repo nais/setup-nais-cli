@@ -43,7 +43,7 @@ A GitHub Action to install the [Nais CLI](https://github.com/nais/cli) on Linux 
 
 ## Support
 
-- 📖 [Nais CLI Documentation](https://cli.nais.io/)
+- 📖 [Nais CLI Documentation](https://doc.nais.io/cli)
 - 🐛 [Report Issues](https://github.com/nais/setup-nais-cli/issues)
 
 ---
