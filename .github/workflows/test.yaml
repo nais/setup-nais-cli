@@ -60,8 +60,17 @@ jobs:
 
       - name: Verify nais CLI installation
         run: |
-          nais --version
-          echo "✅ Latest version installed successfully"
+          echo "PATH: $PATH"
+          echo "Checking if nais is in PATH..."
+          which nais || echo "nais not found in PATH"
+          ls -la ~/.local/bin/ || echo "~/.local/bin/ not found"
+          if command -v nais &> /dev/null; then
+            nais --version
+            echo "✅ Latest version installed successfully"
+          else
+            echo "❌ nais command not found"
+            exit 1
+          fi
 
   test-specific-version:
     runs-on: ubuntu-latest
@@ -87,11 +96,20 @@ jobs:
 
       - name: Verify specific version
         run: |
-          nais --version
-          version_output=$(nais --version)
-          if [[ "$version_output" == *"3.8.3"* ]]; then
-            echo "✅ Correct version v3.8.3 installed successfully"
+          echo "PATH: $PATH"
+          echo "Checking if nais is in PATH..."
+          which nais || echo "nais not found in PATH"
+          ls -la ~/.local/bin/ || echo "~/.local/bin/ not found"
+          if command -v nais &> /dev/null; then
+            nais --version
+            version_output=$(nais --version)
+            if [[ "$version_output" == *"3.8.3"* ]]; then
+              echo "✅ Correct version v3.8.3 installed successfully"
+            else
+              echo "❌ Expected version v3.8.3, but got: $version_output"
+              exit 1
+            fi
           else
-            echo "❌ Expected version v3.8.3, but got: $version_output"
+            echo "❌ nais command not found"
             exit 1
           fi

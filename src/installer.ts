@@ -78,9 +78,12 @@ export async function downloadAndInstall(
       await makeExecutable(targetPath);
 
       core.info(`Installed nais CLI to: ${targetPath}`);
+      core.info(`Install directory: ${installDir}`);
+      core.info(`HOME environment: ${process.env.HOME}`);
 
       // Add to PATH
       core.addPath(installDir);
+      core.info(`Added ${installDir} to PATH`);
 
       // Verify installation
       version = await verifyInstallation(targetPath);
