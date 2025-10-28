@@ -62,7 +62,7 @@ git push origin v1.0.0
 
 When you create a tag, the automated workflow:
 
-1. ✅ **Validates** - Runs `mise run check` (linting + tests)
+1. ✅ **Validates** - Runs `npm run check` (linting + tests)
 2. 🏷️ **Extracts** version info from tag
 3. 📝 **Creates** GitHub release with usage examples
 4. 🔄 **Updates** major version tag to point to new release
@@ -92,10 +92,10 @@ Always test before releasing:
 
 ```bash
 # Run all tests and linting
-mise run check
+npm run check
 
-# Test the action locally if possible
-./test-scripts.sh
+# Build to ensure compilation works
+npm run build
 ```
 
 ## Major Version Updates

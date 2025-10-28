@@ -1,28 +1,11 @@
 name: "Nais Setup CLI"
 description: "Setup CLI for the Nais platform (Linux only)"
+author: "nais"
 inputs:
   version:
     description: "Version of nais CLI to install (e.g., 'v3.8.3' or 'latest')"
     required: false
     default: "latest"
 runs:
-  using: "composite"
-  steps:
-    - name: "Determine platform and architecture"
-      shell: bash
-      id: platform
-      run: ${{ github.action_path }}/scripts/detect-platform.sh
-
-    - name: "Get release information"
-      shell: bash
-      id: release
-      env:
-        VERSION: ${{ inputs.version }}
-      run: ${{ github.action_path }}/scripts/get-release.sh
-
-    - name: "Download and install nais CLI"
-      shell: bash
-      env:
-        TAG_NAME: ${{ steps.release.outputs.tag_name }}
-        FILENAME: ${{ steps.platform.outputs.filename }}
-      run: ${{ github.action_path }}/scripts/install-nais.sh
+  using: "node20"
+  main: "dist/index.js"

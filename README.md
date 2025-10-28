@@ -13,15 +13,83 @@ steps:
     run: nais --version
 ```
 
+# Setup Nais CLI Action
+
+A modern TypeScript-based GitHub Action to install the [Nais CLI](https://github.com/nais/cli) by downloading pre-built binaries from GitHub releases.
+
+## Usage
+
+### Install Latest Version
+
+```yaml
+steps:
+  - uses: nais/setup-nais-cli@v1
+  - name: Use nais CLI
+    run: nais --version
+```
+
 ### Install Specific Version
 
 ```yaml
 steps:
-  - uses: nais/setup-nais-cli@alpha
+  - uses: nais/setup-nais-cli@v1
     with:
       version: v3.8.3
   - name: Use nais CLI
     run: nais --version
+```
+
+## Inputs
+
+| Name      | Description                                                 | Required | Default  |
+| --------- | ----------------------------------------------------------- | -------- | -------- |
+| `version` | Version of nais CLI to install (e.g., `v3.8.3` or `latest`) | No       | `latest` |
+
+## Supported Platforms
+
+This action supports Linux GitHub runners:
+
+- Linux (amd64, arm64)
+
+**Note**: This action is designed specifically for Linux environments and will fail on macOS or Windows runners. Testing is primarily done on amd64 for performance reasons.
+
+## Features
+
+- ✅ **TypeScript Implementation**: Modern, type-safe codebase
+- ✅ **Fast Installation**: Downloads pre-built binaries (seconds vs minutes)
+- ✅ **Checksum Verification**: Ensures download integrity and security
+- ✅ **Optimized for Linux**: Focused on CI/CD environments
+- ✅ **Comprehensive Testing**: Unit tests and integration tests
+- ✅ **Version Management**: Supports both latest and specific versions
+
+## What Changed from v0.x
+
+This action was completely rewritten in TypeScript from the previous bash-based implementation:
+
+### Before (Bash Scripts)
+
+- Multiple shell scripts with cross-platform complexity
+- Manual platform detection and error handling
+- Basic checksum verification
+
+### After (TypeScript)
+
+- **Modern Architecture**: Type-safe, modular TypeScript codebase
+- **Better Error Handling**: Structured error types and comprehensive logging
+- **Improved Testing**: Unit tests with Jest and comprehensive CI/CD
+- **Enhanced UX**: Better progress indication and error messages
+- **Changesets Integration**: Automated release management
+
+## Migration from v0.x
+
+No breaking changes in the API! Update your workflow files to use the new version:
+
+```yaml
+# Before
+- uses: nais/setup-nais-cli@v0.x
+
+# After
+- uses: nais/setup-nais-cli@v1
 ```
 
 ## Inputs
@@ -70,7 +138,7 @@ To pin to a specific version (recommended for production):
 
 ## Development
 
-This action uses [Mise](https://mise.jdx.dev/) for development tooling and task management.
+This action is built with TypeScript and uses [Mise](https://mise.jdx.dev/) for Node.js version management.
 
 ### Prerequisites
 
@@ -79,64 +147,113 @@ This action uses [Mise](https://mise.jdx.dev/) for development tooling and task 
 ### Setup
 
 ```bash
-# Trust and install tools (shellcheck)
+# Trust and install Node.js 20
 mise trust
 mise install
+
+# Install dependencies
+npm install
 ```
 
-### Available Tasks
+### Available Scripts
 
 ```bash
-# Show all available tasks
-mise tasks
+# Install dependencies
+npm install
 
-# Run linting (shellcheck) on all bash scripts
-mise run lint
+# Build the action
+npm run build
 
-# Run tests for the individual scripts
-mise run test
+# Run type checking
+npm run typecheck
 
-# Run both linting and tests
-mise run check
+# Run linting
+npm run lint
 
-# Clean up test artifacts
-mise run clean
+# Run tests
+npm test
+
+# Format code
+npm run format
+
+# Check code formatting
+npm run format:check
+
+# Run all checks (typecheck, lint, format-check, test)
+npm run check
+
+# Clean build artifacts
+npm run clean
+```
+
+### Release Management
+
+This project uses [Changesets](https://github.com/changesets/changesets) for release management:
+
+```bash
+# Create a changeset (describes changes for release)
+npm run changeset
+
+# Version packages (updates package.json and generates CHANGELOG)
+npm run version-packages
+
+# Publish release (after building and testing)
+npm run release
 ```
 
 ### Project Structure
 
 ```
+├── src/                     # TypeScript source code
+│   ├── __tests__/           # Unit tests
+│   ├── types.ts             # Type definitions
+│   ├── platform.ts          # Platform detection
+│   ├── github.ts            # GitHub API interactions
+│   ├── installer.ts         # Download and installation logic
+│   ├── setup-nais-cli.ts    # Main setup function
+│   └── index.ts             # Entry point
+├── dist/                    # Compiled JavaScript (auto-generated)
 ├── action.yaml              # GitHub Action definition
-├── scripts/                 # Modular bash scripts
-│   ├── detect-platform.sh   # Platform/architecture detection
-│   ├── get-release.sh       # Release information fetching
-│   └── install-nais.sh      # Download, verify, and install
-├── test-scripts.sh          # Test script for all components
-├── .mise.toml               # Mise configuration for tools and tasks
-└── .shellcheckrc            # Shellcheck configuration
+├── package.json             # Node.js dependencies and scripts
+├── tsconfig.json            # TypeScript configuration
+├── jest.config.js           # Jest test configuration
+├── .eslintrc.js             # ESLint configuration
+├── .prettierrc              # Prettier configuration
+└── .mise.toml               # Mise configuration for tools and tasks
 ```
 
-The scripts are designed to be:
-
-- **Modular**: Each script has a single responsibility
-- **Testable**: Can be tested individually and in combination
-- **Linted**: All scripts pass shellcheck validation
-- **Maintainable**: Clear separation of concerns
-
-### Releases
-
-To create a new release:
+### Testing
 
 ```bash
-# Run tests first
-mise run check
+# Run unit tests (uses dry-run mode to avoid installing binaries)
+npm test
 
-# Create and push a release (will trigger automated workflow)
-mise run release -- 1.0.0
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm test -- --coverage
+
+# Test the action locally without permanent installation
+npm run test:integration
 ```
 
-See [RELEASE.md](RELEASE.md) for detailed release process documentation.
+**Dry-Run Testing**: All tests run in dry-run mode to avoid installing binaries to your local system. The action will download and verify the nais CLI binary but won't install it permanently. You can also manually test by setting environment variables:
 
-## Code generated by GitHub Copilot
+```bash
+# Test locally in dry-run mode
+NAIS_CLI_DRY_RUN=true RUNNER_OS=Linux RUNNER_ARCH=X64 RUNNER_TEMP=/tmp INPUT_VERSION=latest node dist/index.js
+```
 
-This repository uses GitHub Copilot to generate code.
+### Building
+
+The action must be built before it can be used:
+
+```bash
+# Build the action
+npm run build
+
+# The compiled output goes to dist/index.js
+```
+
+**Important**: Always commit the built `dist/` directory. GitHub Actions runs the compiled JavaScript, not the TypeScript source.

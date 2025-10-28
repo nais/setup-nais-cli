@@ -20,8 +20,13 @@ jobs:
         with:
           cache: false
 
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
+
       - name: Run tests
-        run: mise run check
+        run: npm run check
 
       - name: Get version info
         id: version

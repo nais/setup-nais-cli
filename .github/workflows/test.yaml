@@ -3,44 +3,89 @@ on:
   - pull_request
 
 jobs:
-  test-latest:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./
-      - name: "Verify nais version (latest)"
-        run: |
-          nais --version
-          echo "Latest version installed successfully"
-          echo "Architecture: $(uname -m)"
 
-  test-specific-version:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./
+      - name: Setup Mise
+        uses: jdx/mise-action@v2
         with:
-          version: "v3.8.3"
-      - name: "Verify nais version (specific)"
+          cache: false
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run type checking
+        run: npm run typecheck
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build action
+        run: npm run build
+
+      - name: Check dist is up to date
         run: |
-          nais --version
-          echo "Architecture: $(uname -m)"
-          # Verify it's the expected version
-          version_output=$(nais --version)
-          if [[ "$version_output" == *"3.8.3"* ]]; then
-            echo "Correct version v3.8.3 installed successfully"
-          else
-            echo "Expected version v3.8.3, but got: $version_output"
+          if [ -n "$(git status --porcelain dist)" ]; then
+            echo "ERROR: dist directory is not up to date. Please run 'npm run build' and commit the changes."
+            git status --porcelain dist
             exit 1
           fi
 
-  test-linux:
+  test-action:
     runs-on: ubuntu-latest
+    needs: build-and-test
     steps:
       - uses: actions/checkout@v4
-      - uses: ./
-      - name: "Verify nais version"
+
+      - name: Setup Mise
+        uses: jdx/mise-action@v2
+        with:
+          cache: false
+
+      - name: Build action
+        run: npm run build
+
+      - name: Test action (latest version)
+        uses: ./
+        with:
+          version: latest
+
+      - name: Verify nais CLI installation
         run: |
           nais --version
-          echo "Architecture: $(uname -m)"
-          echo "Platform detection working correctly"
+          echo "✅ Latest version installed successfully"
+
+  test-specific-version:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Mise
+        uses: jdx/mise-action@v2
+        with:
+          cache: false
+
+      - name: Build action
+        run: npm run build
+
+      - name: Test action (specific version)
+        uses: ./
+        with:
+          version: "v3.8.3"
+
+      - name: Verify specific version
+        run: |
+          nais --version
+          version_output=$(nais --version)
+          if [[ "$version_output" == *"3.8.3"* ]]; then
+            echo "✅ Correct version v3.8.3 installed successfully"
+          else
+            echo "❌ Expected version v3.8.3, but got: $version_output"
+            exit 1
+          fi
