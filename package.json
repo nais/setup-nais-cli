@@ -19,7 +19,7 @@
     "version-packages": "changeset version",
     "release:prepare": "npm run check && npm run build",
     "release:version": "changeset version",
-    "release:publish": "changeset tag",
+    "release:publish": "npm run check && npm run build && changeset tag",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run test"
   },
   "keywords": [
