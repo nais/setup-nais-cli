@@ -5,8 +5,7 @@
  * This demonstrates how to test the action without installing binaries permanently
  */
 
-const { execSync } = require('child_process');
-const path = require('path');
+import { execSync } from 'child_process';
 
 console.log('🧪 Testing nais CLI setup action in dry-run mode...\n');
 

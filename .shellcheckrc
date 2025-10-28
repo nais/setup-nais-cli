@@ -1,3 +1,0 @@
-# shellcheck configuration for nais setup action scripts
-disable=SC2034  # Variable appears unused
-external-sources=true
