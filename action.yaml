@@ -11,18 +11,30 @@ runs:
     - name: "Determine platform and architecture"
       shell: bash
       id: platform
-      run: ${{ github.action_path }}/scripts/detect-platform.sh
+      run: |
+        # Convert Windows paths to Unix-style for bash compatibility
+        ACTION_PATH="${{ github.action_path }}"
+        ACTION_PATH="${ACTION_PATH//\\//}"
+        "$ACTION_PATH/scripts/detect-platform.sh"
 
     - name: "Get release information"
       shell: bash
       id: release
       env:
         VERSION: ${{ inputs.version }}
-      run: ${{ github.action_path }}/scripts/get-release.sh
+      run: |
+        # Convert Windows paths to Unix-style for bash compatibility
+        ACTION_PATH="${{ github.action_path }}"
+        ACTION_PATH="${ACTION_PATH//\\//}"
+        "$ACTION_PATH/scripts/get-release.sh"
 
     - name: "Download and install nais CLI"
       shell: bash
       env:
         TAG_NAME: ${{ steps.release.outputs.tag_name }}
         FILENAME: ${{ steps.platform.outputs.filename }}
-      run: ${{ github.action_path }}/scripts/install-nais.sh
+      run: |
+        # Convert Windows paths to Unix-style for bash compatibility
+        ACTION_PATH="${{ github.action_path }}"
+        ACTION_PATH="${ACTION_PATH//\\//}"
+        "$ACTION_PATH/scripts/install-nais.sh"
