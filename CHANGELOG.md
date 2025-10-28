@@ -1,5 +1,11 @@
 # setup-nais-cli
 
+## 1.0.0-next.3
+
+### Patch Changes
+
+- 5597d77: Use custom tag handling
+
 ## 1.0.0-next.2
 
 ### Patch Changes
