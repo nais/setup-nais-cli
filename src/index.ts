@@ -6,6 +6,10 @@ import { setupNaisCli } from './setup-nais-cli';
  */
 async function run(): Promise<void> {
   try {
+    core.info('🚀 Starting nais CLI setup action...');
+    core.info(`Environment: NODE_ENV=${process.env.NODE_ENV}, HOME=${process.env.HOME}`);
+    core.info(`Runner: OS=${process.env.RUNNER_OS}, ARCH=${process.env.RUNNER_ARCH}`);
+    
     const version = core.getInput('version') || 'latest';
     core.info(`Setting up nais CLI version: ${version}`);
 
@@ -14,6 +18,7 @@ async function run(): Promise<void> {
     core.info('✅ nais CLI setup completed successfully!');
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    core.error(`Error details: ${error instanceof Error ? error.stack : error}`);
     core.setFailed(`❌ Failed to setup nais CLI: ${message}`);
   }
 }
