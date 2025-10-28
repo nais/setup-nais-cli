@@ -77,12 +77,19 @@ if ! tar -xzf "$FILENAME"; then
 fi
 
 # Find the nais binary (it should be in the extracted directory)
-nais_binary=$(find . -name "nais" -type f -executable)
+# Note: macOS find doesn't support -executable, so we look for the file by name
+nais_binary=$(find . -name "nais" -type f | head -1)
 if [ -z "$nais_binary" ]; then
   echo "Error: Could not find nais binary in extracted archive"
   echo "Archive contents:"
   find . -type f
   exit 1
+fi
+
+# Verify it's actually executable (and make it executable if not)
+if [ ! -x "$nais_binary" ]; then
+  echo "Making nais binary executable..."
+  chmod +x "$nais_binary"
 fi
 
 # Create bin directory and copy binary
