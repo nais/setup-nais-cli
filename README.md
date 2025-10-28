@@ -36,7 +36,7 @@ This action supports Linux GitHub runners:
 
 - Linux (amd64, arm64)
 
-**Note**: This action is designed specifically for Linux environments and will fail on macOS or Windows runners.
+**Note**: This action is designed specifically for Linux environments.
 
 ## Features
 
