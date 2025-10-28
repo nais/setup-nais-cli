@@ -4,7 +4,7 @@ This project uses [Changesets](https://github.com/changesets/changesets) for aut
 
 ## How It Works
 
-- **Development**: Work on `javascript` branch (source code only)
+- **Development**: Work on `main` branch (source code only)
 - **Release Branches**: `v1`, `v2` etc. (include compiled `dist/` for GitHub Actions)
 - **Tags**: `v1.0.0`, `v1.1.0` etc. (specific versions)
 
