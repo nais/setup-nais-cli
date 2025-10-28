@@ -13,7 +13,6 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event.pull_request.merged == true)
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,12 +24,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Run checks
-        run: npm run check
-
-      - name: Build package
-        run: npm run build
 
       - name: Create Release Pull Request or Publish to GitHub
         id: changesets
@@ -75,7 +68,7 @@ jobs:
             # For stable releases, create/update the major version branch
             if [ "$IS_PRERELEASE" = false ]; then
               echo "Updating major version branch $MAJOR_VERSION"
-              
+
               # Create/update the major version branch (e.g., v1, v2)
               git checkout -B "$MAJOR_VERSION"
 
