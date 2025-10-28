@@ -53,13 +53,10 @@ jobs:
       - name: Build action
         run: npm run build
 
-      - name: Test action (latest version) - direct run
-        id: test-action
-        run: |
-          export INPUT_VERSION="latest"
-          export RUNNER_OS="Linux"
-          export RUNNER_ARCH="X64"
-          node dist/index.js
+      - name: Test action (latest version)
+        uses: ./
+        with:
+          version: latest
 
       - name: Verify nais CLI installation
         run: |
@@ -92,13 +89,10 @@ jobs:
       - name: Build action
         run: npm run build
 
-      - name: Test action (specific version) - direct run
-        id: test-specific
-        run: |
-          export INPUT_VERSION="v3.8.3"
-          export RUNNER_OS="Linux"
-          export RUNNER_ARCH="X64"
-          node dist/index.js
+      - name: Test action (specific version)
+        uses: ./
+        with:
+          version: "v3.8.3"
 
       - name: Verify specific version
         run: |

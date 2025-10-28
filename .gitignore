@@ -63,6 +63,5 @@ temp/
 .env
 
 # Changeset release files
-.changeset/*.md
 !.changeset/config.json
 !.changeset/README.md

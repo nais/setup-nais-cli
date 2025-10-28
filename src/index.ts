@@ -23,8 +23,8 @@ async function run(): Promise<void> {
   }
 }
 
-// Only run if this is the main module
-if (require.main === module) {
+// Only run if this is the main module (ES module version)
+if (import.meta.url === `file://${process.argv[1]}`) {
   run();
 }
 
