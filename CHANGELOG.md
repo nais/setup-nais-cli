@@ -1,5 +1,11 @@
 # setup-nais-cli
 
+## 1.0.0-next.2
+
+### Patch Changes
+
+- f335765: Remove excess log line
+
 ## 1.0.0-next.1
 
 ### Patch Changes

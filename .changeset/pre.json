@@ -5,6 +5,7 @@
     "setup-nais-cli": "0.0.0"
   },
   "changesets": [
+    "all-bottles-switch",
     "brave-dots-tie",
     "jolly-roses-design"
   ]
