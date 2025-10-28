@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - alpha
+  pull_request:
+    types: [closed]
+    branches:
+      - alpha
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event.pull_request.merged == true)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Mise
+        uses: jdx/mise-action@v2
+        with:
+          cache: false
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: npm run check
+
+      - name: Build package
+        run: npm run build
+
+      - name: Create Release Pull Request or Publish to GitHub
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # This expects you to have a script called release which does a build for your packages and calls changeset publish
+          publish: npm run release:publish
+          title: "Release: New version"
+          commit: "Release: New version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update release branches
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          # Get the published version from changesets output
+          PUBLISHED_PACKAGES='${{ steps.changesets.outputs.publishedPackages }}'
+
+          if [ "$PUBLISHED_PACKAGES" != "[]" ]; then
+            # Extract version from the published packages JSON
+            VERSION=$(echo "$PUBLISHED_PACKAGES" | jq -r '.[0].version')
+            MAJOR_VERSION="v$(echo "$VERSION" | cut -d. -f1)"
+            TAG="v$VERSION"
+
+            echo "Published version: $VERSION"
+            echo "Major version: $MAJOR_VERSION"
+            echo "Tag: $TAG"
+
+            # Configure git
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            # Create/update the major version branch (e.g., v1, v2)
+            git checkout -B "$MAJOR_VERSION"
+
+            # Add the dist directory for this release branch
+            git add -f dist/
+            git add .
+            git commit -m "Release $TAG with compiled dist/"
+
+            # Push the release branch
+            git push origin "$MAJOR_VERSION" --force
+
+            # Create the specific version tag
+            git tag -fa "$TAG" -m "Release $TAG"
+            git push origin "$TAG" --force
+
+            echo "✅ Updated release branch $MAJOR_VERSION and created tag $TAG"
+          fi
