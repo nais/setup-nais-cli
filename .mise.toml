@@ -29,3 +29,26 @@ depends = ["lint", "test"]
 [tasks.help]
 description = "Show available tasks"
 run = "mise tasks"
+
+[tasks.release]
+description = "Create a new release (usage: mise run release -- 1.0.0)"
+run = [
+  '''
+  if [ $# -eq 0 ]; then
+    echo "Usage: mise run release -- <version>"
+    echo "Example: mise run release -- 1.0.0"
+    exit 1
+  fi
+  VERSION="$1"
+  if ! echo "$VERSION" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+    echo "Error: Version must be in format X.Y.Z (e.g., 1.0.0)"
+    exit 1
+  fi
+  echo "Creating release v$VERSION..."
+  mise run check
+  git tag "v$VERSION"
+  git push origin "v$VERSION"
+  echo "✅ Release v$VERSION created and pushed"
+  echo "GitHub Actions will handle the rest automatically"
+  '''
+]
