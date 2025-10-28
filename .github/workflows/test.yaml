@@ -53,17 +53,13 @@ jobs:
       - name: Build action
         run: npm run build
 
-      - name: Test action (latest version)
+      - name: Test action (latest version) - direct run
         id: test-action
-        uses: ./
-        with:
-          version: latest
-
-      - name: Show action output
-        if: always()
         run: |
-          echo "Action completed with output:"
-          echo "Steps context: ${{ toJson(steps.test-action) }}"
+          export INPUT_VERSION="latest"
+          export RUNNER_OS="Linux"
+          export RUNNER_ARCH="X64"
+          node dist/index.js
 
       - name: Verify nais CLI installation
         run: |
@@ -96,17 +92,13 @@ jobs:
       - name: Build action
         run: npm run build
 
-      - name: Test action (specific version)
+      - name: Test action (specific version) - direct run
         id: test-specific
-        uses: ./
-        with:
-          version: "v3.8.3"
-
-      - name: Show action output
-        if: always()
         run: |
-          echo "Action completed with output:"
-          echo "Steps context: ${{ toJson(steps.test-specific) }}"
+          export INPUT_VERSION="v3.8.3"
+          export RUNNER_OS="Linux"
+          export RUNNER_ARCH="X64"
+          node dist/index.js
 
       - name: Verify specific version
         run: |
