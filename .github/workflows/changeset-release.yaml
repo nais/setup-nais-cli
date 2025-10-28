@@ -3,11 +3,11 @@ name: Release
 on:
   push:
     branches:
-      - main
+      - alpha
   pull_request:
     types: [closed]
     branches:
-      - main
+      - alpha
 
 permissions:
   contents: write
