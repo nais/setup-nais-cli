@@ -1,24 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
-# Detect platform and architecture for nais CLI download
+# Detect platform and architecture for nais CLI download (Linux only)
 # Sets GITHUB_OUTPUT variables: os, arch, filename
 
-case "$RUNNER_OS" in
-  Linux)
-    os="linux"
-    ;;
-  macOS)
-    os="darwin"
-    ;;
-  Windows)
-    os="windows"
-    ;;
-  *)
-    echo "Unsupported OS: $RUNNER_OS"
-    exit 1
-    ;;
-esac
+# Validate we're running on Linux
+if [ "$RUNNER_OS" != "Linux" ]; then
+  echo "Error: This action only supports Linux runners"
+  echo "Current runner OS: $RUNNER_OS"
+  exit 1
+fi
+
+os="linux"
 
 case "$RUNNER_ARCH" in
   X64)
@@ -29,6 +22,7 @@ case "$RUNNER_ARCH" in
     ;;
   *)
     echo "Unsupported architecture: $RUNNER_ARCH"
+    echo "Supported architectures: X64 (amd64), ARM64 (arm64)"
     exit 1
     ;;
 esac

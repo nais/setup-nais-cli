@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., 1.0.0 - do not include v prefix)'
+        description: "Version to release (e.g., 1.0.0 - do not include v prefix)"
         required: true
         type: string
       prerelease:
-        description: 'Mark as prerelease'
+        description: "Mark as prerelease"
         required: false
         type: boolean
         default: false
@@ -44,7 +44,7 @@ jobs:
           VERSION="${{ inputs.version }}"
           TAG="v${VERSION}"
           MAJOR_VERSION="v$(echo $VERSION | cut -d. -f1)"
-          
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "major_version=$MAJOR_VERSION" >> $GITHUB_OUTPUT
@@ -60,7 +60,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           git tag -a ${{ steps.version.outputs.tag }} -m "Release ${{ steps.version.outputs.tag }}"
           git push origin ${{ steps.version.outputs.tag }}
 
@@ -72,20 +72,20 @@ jobs:
           if [ "${{ inputs.prerelease }}" = "true" ]; then
             PRERELEASE_FLAG="--prerelease"
           fi
-          
+
           gh release create ${{ steps.version.outputs.tag }} \
             --title "Release ${{ steps.version.outputs.tag }}" \
             --notes "## Changes in ${{ steps.version.outputs.tag }}
-          
+
           See the [commit history](https://github.com/${{ github.repository }}/commits/${{ steps.version.outputs.tag }}) for details.
-          
+
           ## Usage
-          
+
           Use the specific version:
           \`\`\`yaml
           - uses: nais/setup-nais-cli@${{ steps.version.outputs.tag }}
           \`\`\`
-          
+
           Or use the major version tag for automatic patch/minor updates:
           \`\`\`yaml
           - uses: nais/setup-nais-cli@${{ steps.version.outputs.major_version }}
@@ -97,7 +97,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           # Force update the major version tag to point to this commit
           git tag -fa ${{ steps.version.outputs.major_version }} \
             -m "Update ${{ steps.version.outputs.major_version }} to ${{ steps.version.outputs.tag }}"

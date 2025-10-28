@@ -4,17 +4,24 @@ on:
 
 jobs:
   test-latest:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runner: [ubuntu-latest, ubuntu-24.04-arm64]
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./
       - name: "Verify nais version (latest)"
         run: |
           nais --version
-          echo "Latest version installed successfully"
+          echo "Latest version installed successfully on ${{ matrix.runner }}"
+          echo "Architecture: $(uname -m)"
 
   test-specific-version:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runner: [ubuntu-latest, ubuntu-24.04-arm64]
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./
@@ -23,23 +30,27 @@ jobs:
       - name: "Verify nais version (specific)"
         run: |
           nais --version
+          echo "Architecture: $(uname -m)"
           # Verify it's the expected version
           version_output=$(nais --version)
           if [[ "$version_output" == *"3.8.3"* ]]; then
-            echo "Correct version v3.8.3 installed successfully"
+            echo "Correct version v3.8.3 installed successfully on ${{ matrix.runner }}"
           else
             echo "Expected version v3.8.3, but got: $version_output"
             exit 1
           fi
 
-  test-cross-platform:
+  test-linux:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+        runner: [ubuntu-latest, ubuntu-24.04-arm64]
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./
-      - name: "Verify nais version (cross-platform)"
+      - name: "Verify nais version"
         run: |
           nais --version
+          echo "Runner: ${{ matrix.runner }}"
+          echo "Architecture: $(uname -m)"
+          echo "Platform detected by action should match this architecture"

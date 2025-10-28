@@ -32,8 +32,7 @@ run = "mise tasks"
 
 [tasks.release]
 description = "Create a new release (usage: mise run release -- 1.0.0)"
-run = [
-  '''
+run = ['''
   if [ $# -eq 0 ]; then
     echo "Usage: mise run release -- <version>"
     echo "Example: mise run release -- 1.0.0"
@@ -50,5 +49,4 @@ run = [
   git push origin "v$VERSION"
   echo "✅ Release v$VERSION created and pushed"
   echo "GitHub Actions will handle the rest automatically"
-  '''
-]
+  ''']

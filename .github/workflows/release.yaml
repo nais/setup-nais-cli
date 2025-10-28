@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
@@ -29,7 +29,7 @@ jobs:
           TAG=${GITHUB_REF#refs/tags/}
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "version=${TAG#v}" >> $GITHUB_OUTPUT
-          
+
           # Extract major version (e.g., v1.2.3 -> v1)
           major_version=$(echo "$TAG" | sed -E 's/^v([0-9]+)\..*/v\1/')
           echo "major_version=$major_version" >> $GITHUB_OUTPUT
@@ -41,16 +41,16 @@ jobs:
           gh release create ${{ steps.version.outputs.tag }} \
             --title "Release ${{ steps.version.outputs.tag }}" \
             --notes "## Changes in ${{ steps.version.outputs.tag }}
-          
+
           See the [commit history](https://github.com/${{ github.repository }}/commits/${{ steps.version.outputs.tag }}) for details.
-          
+
           ## Usage
-          
+
           Use the specific version:
           \`\`\`yaml
           - uses: nais/setup-nais-cli@${{ steps.version.outputs.tag }}
           \`\`\`
-          
+
           Or use the major version tag for automatic patch/minor updates:
           \`\`\`yaml
           - uses: nais/setup-nais-cli@${{ steps.version.outputs.major_version }}
@@ -60,7 +60,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           # Force update the major version tag to point to this commit
           git tag -fa ${{ steps.version.outputs.major_version }} \
             -m "Update ${{ steps.version.outputs.major_version }} to ${{ steps.version.outputs.tag }}"

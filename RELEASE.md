@@ -29,6 +29,7 @@ Users can reference the action in different ways:
 ### Method 1: Automatic Release (Recommended)
 
 1. **Create a tag locally:**
+
    ```bash
    git tag v1.0.0
    git push origin v1.0.0

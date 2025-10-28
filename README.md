@@ -32,17 +32,17 @@ steps:
 
 ## Supported Platforms
 
-This action supports the following GitHub runner platforms:
+This action supports Linux GitHub runners:
 
 - Linux (amd64, arm64)
-- macOS (amd64, arm64)
-- Windows (amd64, arm64)
+
+**Note**: This action is designed specifically for Linux environments and will fail on macOS or Windows runners.
 
 ## Features
 
 - ✅ Downloads pre-built binaries for fast installation
 - ✅ Verifies checksums for security
-- ✅ Supports all GitHub runner platforms
+- ✅ Optimized for Linux environments
 - ✅ Caches downloads for improved performance
 - ✅ Supports both latest and specific version installation
 

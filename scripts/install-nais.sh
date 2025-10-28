@@ -76,9 +76,8 @@ if ! tar -xzf "$FILENAME"; then
   exit 1
 fi
 
-# Find the nais binary (it should be in the extracted directory)
-# Look for both nais (Linux/macOS) and nais.exe (Windows)
-nais_binary=$(find . \( -name "nais" -o -name "nais.exe" \) -type f | head -1)
+# Find the nais binary (should be named 'nais' on Linux)
+nais_binary=$(find . -name "nais" -type f | head -1)
 if [ -z "$nais_binary" ]; then
   echo "Error: Could not find nais binary in extracted archive"
   echo "Archive contents:"
@@ -88,22 +87,13 @@ fi
 
 echo "Found nais binary: $nais_binary"
 
-# Verify it's actually executable (and make it executable if not)
-if [ ! -x "$nais_binary" ]; then
-  echo "Making nais binary executable..."
-  chmod +x "$nais_binary"
-fi
+# Make sure the binary is executable
+chmod +x "$nais_binary"
 
-# Create bin directory and copy binary
+# Create bin directory and install binary
 install_dir="$HOME/.local/bin"
 mkdir -p "$install_dir"
-
-# Determine the target binary name (preserve .exe on Windows)
-if [[ "$nais_binary" == *".exe" ]]; then
-  target_binary="$install_dir/nais.exe"
-else
-  target_binary="$install_dir/nais"
-fi
+target_binary="$install_dir/nais"
 
 cp "$nais_binary" "$target_binary"
 chmod +x "$target_binary"
