@@ -1,5 +1,11 @@
 # setup-nais-cli
 
+## 1.0.0-next.4
+
+### Patch Changes
+
+- df66cd2: change branch from alpha to main
+
 ## 1.0.0-next.3
 
 ### Patch Changes
