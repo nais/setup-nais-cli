@@ -7,9 +7,8 @@ import { setupNaisCli } from './setup-nais-cli';
 async function run(): Promise<void> {
   try {
     core.info('🚀 Starting nais CLI setup action...');
-    core.info(`Environment: NODE_ENV=${process.env.NODE_ENV}, HOME=${process.env.HOME}`);
     core.info(`Runner: OS=${process.env.RUNNER_OS}, ARCH=${process.env.RUNNER_ARCH}`);
-    
+
     const version = core.getInput('version') || 'latest';
     core.info(`Setting up nais CLI version: ${version}`);
 
