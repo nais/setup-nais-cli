@@ -77,14 +77,16 @@ if ! tar -xzf "$FILENAME"; then
 fi
 
 # Find the nais binary (it should be in the extracted directory)
-# Note: macOS find doesn't support -executable, so we look for the file by name
-nais_binary=$(find . -name "nais" -type f | head -1)
+# Look for both nais (Linux/macOS) and nais.exe (Windows)
+nais_binary=$(find . \( -name "nais" -o -name "nais.exe" \) -type f | head -1)
 if [ -z "$nais_binary" ]; then
   echo "Error: Could not find nais binary in extracted archive"
   echo "Archive contents:"
   find . -type f
   exit 1
 fi
+
+echo "Found nais binary: $nais_binary"
 
 # Verify it's actually executable (and make it executable if not)
 if [ ! -x "$nais_binary" ]; then
@@ -95,17 +97,25 @@ fi
 # Create bin directory and copy binary
 install_dir="$HOME/.local/bin"
 mkdir -p "$install_dir"
-cp "$nais_binary" "$install_dir/nais"
-chmod +x "$install_dir/nais"
 
-echo "Installed nais CLI to: $install_dir/nais"
+# Determine the target binary name (preserve .exe on Windows)
+if [[ "$nais_binary" == *".exe" ]]; then
+  target_binary="$install_dir/nais.exe"
+else
+  target_binary="$install_dir/nais"
+fi
+
+cp "$nais_binary" "$target_binary"
+chmod +x "$target_binary"
+
+echo "Installed nais CLI to: $target_binary"
 
 # Add to PATH
 echo "$install_dir" >> "$GITHUB_PATH"
 
 # Verify installation
 echo "Verifying installation..."
-"$install_dir/nais" --version
+"$target_binary" --version
 
 echo "nais CLI installation completed successfully!"
 
