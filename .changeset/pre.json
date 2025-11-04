@@ -2,7 +2,7 @@
   "mode": "pre",
   "tag": "next",
   "initialVersions": {
-    "setup-nais-cli": "0.0.0"
+    "setup": "0.0.0"
   },
   "changesets": [
     "all-bottles-switch",

@@ -1,5 +1,5 @@
 ---
-'setup-nais-cli': patch
+'setup': patch
 ---
 
 Do not modify major branch for prerelease versions

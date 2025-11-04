@@ -1,18 +1,18 @@
-# Setup Nais CLI Action
+# nais/setup Github Action
 
 A GitHub Action to install the [Nais CLI](https://github.com/nais/cli) on Linux runners.
 
 ## Usage
 
 ```yaml
-- uses: nais/setup-nais-cli@v1
+- uses: nais/setup@v1
 - run: nais --version
 ```
 
 ### With specific version
 
 ```yaml
-- uses: nais/setup-nais-cli@v1
+- uses: nais/setup@v1
   with:
     version: v3.8.3
 ```
@@ -28,13 +28,13 @@ A GitHub Action to install the [Nais CLI](https://github.com/nais/cli) on Linux 
 **Recommended:** Use major version for automatic updates
 
 ```yaml
-- uses: nais/setup-nais-cli@v1 # Gets latest v1.x.x
+- uses: nais/setup@v1 # Gets latest v1.x.x
 ```
 
 **Alternative:** Pin to exact version
 
 ```yaml
-- uses: nais/setup-nais-cli@v1.2.3 # No automatic updates
+- uses: nais/setup@v1.2.3 # No automatic updates
 ```
 
 ## Requirements
@@ -44,7 +44,7 @@ A GitHub Action to install the [Nais CLI](https://github.com/nais/cli) on Linux 
 ## Support
 
 - 📖 [Nais CLI Documentation](https://doc.nais.io/cli)
-- 🐛 [Report Issues](https://github.com/nais/setup-nais-cli/issues)
+- 🐛 [Report Issues](https://github.com/nais/setup/issues)
 
 ---
 

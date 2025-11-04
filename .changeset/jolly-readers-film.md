@@ -1,5 +1,5 @@
 ---
-'setup-nais-cli': patch
+'setup': patch
 ---
 
 Use custom tag handling

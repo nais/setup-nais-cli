@@ -1,4 +1,4 @@
-# setup-nais-cli
+# setup
 
 ## 1.0.0-next.4
 
@@ -47,10 +47,10 @@
 
   ```yaml
   # Before
-  - uses: nais/setup-nais-cli@alpha
+  - uses: nais/setup@alpha
 
   # After
-  - uses: nais/setup-nais-cli@v1
+  - uses: nais/setup@v1
     with:
       version: latest
   ```

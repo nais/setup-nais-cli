@@ -1,5 +1,5 @@
 ---
-'setup-nais-cli': patch
+'setup': patch
 ---
 
 change branch from alpha to main

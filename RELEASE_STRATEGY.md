@@ -30,10 +30,10 @@ The workflow automatically:
 
 ```yaml
 # Recommended: Auto-updates within major version
-- uses: nais/setup-nais-cli@v1
+- uses: nais/setup@v1
 
 # Alternative: Pin to exact version
-- uses: nais/setup-nais-cli@v1.2.3
+- uses: nais/setup@v1.2.3
 ```
 
 ## Manual Release

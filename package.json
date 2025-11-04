@@ -1,5 +1,5 @@
 {
-  "name": "setup-nais-cli",
+  "name": "setup",
   "version": "1.0.0-next.4",
   "description": "GitHub Action to setup nais CLI",
   "type": "module",

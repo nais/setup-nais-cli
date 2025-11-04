@@ -1,5 +1,5 @@
 ---
-'setup-nais-cli': major
+'setup': major
 ---
 
 Complete rewrite to TypeScript with modern architecture
@@ -23,10 +23,10 @@ Complete rewrite to TypeScript with modern architecture
 
 ```yaml
 # Before
-- uses: nais/setup-nais-cli@alpha
+- uses: nais/setup@alpha
 
 # After
-- uses: nais/setup-nais-cli@v1
+- uses: nais/setup@v1
   with:
     version: latest
 ```

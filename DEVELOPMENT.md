@@ -1,12 +1,12 @@
 # Development Guide
 
-Development documentation for the setup-nais-cli GitHub Action.
+Development documentation for the `nais/setup` GitHub Action.
 
 ## Setup
 
 ```bash
-git clone https://github.com/nais/setup-nais-cli.git
-cd setup-nais-cli
+git clone https://github.com/nais/setup.git
+cd setup
 
 # Install Node.js 24 via Mise
 mise trust && mise install

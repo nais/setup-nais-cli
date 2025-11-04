@@ -9,7 +9,7 @@ const NAIS_CLI_REPO = 'nais/cli';
  * Fetches release information from GitHub API
  */
 export async function getReleaseInfo(version: string): Promise<ReleaseInfo> {
-  const client = new http.HttpClient('setup-nais-cli');
+  const client = new http.HttpClient('https://github.com/nais/setup');
 
   try {
     let url: string;
