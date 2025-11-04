@@ -1,5 +1,11 @@
 # setup
 
+## 1.0.0-next.5
+
+### Patch Changes
+
+- f8ce341: Rename setup-nais-cli to setup
+
 ## 1.0.0-next.4
 
 ### Patch Changes
