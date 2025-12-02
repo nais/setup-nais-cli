@@ -13,7 +13,7 @@ jobs:
           cache: false
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run type checking
         run: npm run typecheck
@@ -47,7 +47,7 @@ jobs:
           cache: false
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build action
         run: npm run build
@@ -83,7 +83,7 @@ jobs:
           cache: false
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build action
         run: npm run build
